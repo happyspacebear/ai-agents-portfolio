@@ -1,0 +1,322 @@
+{
+  "name": "Augmented LLM Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "sender": "kim@deep-content.io"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "a11c3868-1871-48e2-aa63-eb8348f0456d",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RSflG3pKbRde6p0I",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "single_agent_session"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        340,
+        220
+      ],
+      "id": "2b03fab1-6ba1-4f6d-81ee-6176f0bbca40",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "14AjQZ68YdRIrWMOmAGimBRDWr_RWLV-DgC2TppkFYKY",
+          "mode": "list",
+          "cachedResultName": "Projekt_EQX-Alpha",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14AjQZ68YdRIrWMOmAGimBRDWr_RWLV-DgC2TppkFYKY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Projektdetails_EQX_Alpha",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14AjQZ68YdRIrWMOmAGimBRDWr_RWLV-DgC2TppkFYKY/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        520,
+        220
+      ],
+      "id": "764fa935-145d-486e-8bd2-ba6ae7a10010",
+      "name": "Projektdetails_EQX_Alpha",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yYsN0ijU3PljhcIv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "14AjQZ68YdRIrWMOmAGimBRDWr_RWLV-DgC2TppkFYKY",
+          "mode": "list",
+          "cachedResultName": "Projekt_EQX-Alpha",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14AjQZ68YdRIrWMOmAGimBRDWr_RWLV-DgC2TppkFYKY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1123411083,
+          "mode": "list",
+          "cachedResultName": "Konkurrenzanalyse_Automotive_EV",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14AjQZ68YdRIrWMOmAGimBRDWr_RWLV-DgC2TppkFYKY/edit#gid=1123411083"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        700,
+        220
+      ],
+      "id": "0cb15f58-61a5-4cb5-b547-592d1380770b",
+      "name": "Konkurrenzanalyse_Automotive_EV",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yYsN0ijU3PljhcIv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "kim@deep-content.io",
+        "subject": "Projektbericht EQX-Alpha",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        0
+      ],
+      "id": "7bcd8c5b-d895-4a73-b93f-6aff58e028f7",
+      "name": "Gmail",
+      "webhookId": "56ec6c6f-6d1b-4b93-9fc1-16d959fe70d6",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RSflG3pKbRde6p0I",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        840,
+        220
+      ],
+      "id": "9f5e2bca-f7ef-4000-8fb2-4e6932645bb3",
+      "name": "SerpAPI",
+      "credentials": {
+        "serpApi": {
+          "id": "kZ0BEcXYBK3ZBmn9",
+          "name": "SerpAPI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        60,
+        0
+      ],
+      "id": "3ca81778-1e94-4ee2-9415-2b9b97bceda4",
+      "name": "Get Message",
+      "webhookId": "dbe51f36-7ee4-485a-83b4-78fe64cdcfe1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RSflG3pKbRde6p0I",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Erstelle einen Projektbericht für das Projekt EQX-Alpha von Daimler basierend auf den folgenden Informationen. Gliedere den Bericht in die Abschnitte: 1. Eigener Projektfortschritt (Daimler EQX-Alpha) 2. Marktsituation & Konkurrenz China 3. Marktsituation & Konkurrenz Europa 4. Knappe Einschätzung & Prognose für Daimler (EQX-Alpha) \n\nAnalysiere dafür die Projektnotizen (aus Gmail {{ $json.text }} ), die Informationen zum Projekt selbst (Projektdetails_EQX_Alpha) und die Konkurrenzanalyse (Konkurrenzanalyse_Automotive_EV). \n\nSuche nach einigen aktuellen Informationen zur Konkurrenz (später als Juni 2025) mithilfe des Tools SerpAPI (Google Suche), bis du drei aktuelle Fakten pro Markt (Europa und China) gefunden hast. \n\nFormuliere nun den Bericht professionell, klar und präzise. Integriere die Informationen aus den PM-Notizen, der Online-Konkurrenzsuche und den Google Sheets Daten logisch in die jeweiligen Abschnitte. Der Output soll nur der reine Berichtstext sein, ohne zusätzliche einleitende oder abschließende Sätze deinerseits. Der Output sollte als schönes HTML in klaren Textblöcken für die interne E-Mail Kommunikation optiomiert sein.",
+        "options": {
+          "systemMessage": "Du bist ein Experte für die Automobilindustrie und darauf spezialisiert, prägnante und informative Projektberichte zu erstellen.  Verhalte dich professionell und strukturiert."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        440,
+        0
+      ],
+      "id": "b665247c-8b2a-4686-be4e-8c00f6f9062c",
+      "name": "Augumented LLM"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        180,
+        220
+      ],
+      "id": "91ec117e-cc38-4bc6-9c70-352406a2c035",
+      "name": "GPT 4.1",
+      "credentials": {
+        "openAiApi": {
+          "id": "VXRIqS7E89Dv0NvQ",
+          "name": "OpenAI DC"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Augumented LLM",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Projektdetails_EQX_Alpha": {
+      "ai_tool": [
+        [
+          {
+            "node": "Augumented LLM",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Konkurrenzanalyse_Automotive_EV": {
+      "ai_tool": [
+        [
+          {
+            "node": "Augumented LLM",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SerpAPI": {
+      "ai_tool": [
+        [
+          {
+            "node": "Augumented LLM",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Message": {
+      "main": [
+        [
+          {
+            "node": "Augumented LLM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Augumented LLM": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GPT 4.1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Augumented LLM",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7116fc53-7876-407b-ae27-c48d73c3a1ee",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3a5559e8ad334c16d84ff797b1a53514ebc8a5446b58a1363bd0f879a6fb3f28"
+  },
+  "id": "pgNrbeVIX6dEsv5a",
+  "tags": []
+}

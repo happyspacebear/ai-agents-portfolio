@@ -1,0 +1,471 @@
+{
+  "name": "Multi Agent Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "filters": {
+          "sender": "kim@deep-content.io"
+        }
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -160,
+        0
+      ],
+      "id": "401c4906-f9e3-460c-bfc6-7398f28b6b7a",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RSflG3pKbRde6p0I",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "shared_project_memory",
+        "contextWindowLength": 30
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        220
+      ],
+      "id": "675f7e04-e898-4ad8-a053-568435d6a419",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "14AjQZ68YdRIrWMOmAGimBRDWr_RWLV-DgC2TppkFYKY",
+          "mode": "list",
+          "cachedResultName": "Projekt_EQX-Alpha",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14AjQZ68YdRIrWMOmAGimBRDWr_RWLV-DgC2TppkFYKY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Projektdetails_EQX_Alpha",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14AjQZ68YdRIrWMOmAGimBRDWr_RWLV-DgC2TppkFYKY/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        480,
+        220
+      ],
+      "id": "de8b2273-734e-45f5-9577-d8d48800f41e",
+      "name": "Projektdetails_EQX_Alpha",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yYsN0ijU3PljhcIv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "14AjQZ68YdRIrWMOmAGimBRDWr_RWLV-DgC2TppkFYKY",
+          "mode": "list",
+          "cachedResultName": "Projekt_EQX-Alpha",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14AjQZ68YdRIrWMOmAGimBRDWr_RWLV-DgC2TppkFYKY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1123411083,
+          "mode": "list",
+          "cachedResultName": "Konkurrenzanalyse_Automotive_EV",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/14AjQZ68YdRIrWMOmAGimBRDWr_RWLV-DgC2TppkFYKY/edit#gid=1123411083"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        660,
+        220
+      ],
+      "id": "63638d56-686c-4219-9d7b-d85abec0f3ce",
+      "name": "Konkurrenzanalyse_Automotive_EV",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "yYsN0ijU3PljhcIv",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "kim@deep-content.io",
+        "subject": "Projektbericht EQX-Alpha",
+        "message": "={{ $json.output }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1200,
+        0
+      ],
+      "id": "0899f881-dbb8-489c-a26c-7816ea27184b",
+      "name": "Gmail",
+      "webhookId": "6eb2c202-fc60-4573-b7b6-e79412d1a5d0",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RSflG3pKbRde6p0I",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "messageId": "={{ $json.id }}",
+        "simple": false,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        60,
+        0
+      ],
+      "id": "d9dfd9bc-f0ce-4997-a945-410d85548145",
+      "name": "Get Message",
+      "webhookId": "c4010d0b-ba6c-4153-896f-303e521d8be7",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "RSflG3pKbRde6p0I",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Du bist der Koordinator-Agent für das Daimler Projekt EQX-Alpha. Deine Aufgabe ist es, einen hochwertigen Projektbericht zu erstellen, indem du selbstständig entscheidest, wie du am besten vorgehst und welche Ressourcen du nutzt. Am Ende soll der Bericht schön in HTML formatiert als E-Mail rausgeschickt werden. \n\nVERFÜGBARE TOOLS:\n- Projektdetails_EQX_Alpha (Enthält detaillierte Projektinformationen)\n- Konkurrenzanalyse_Automotive_EV (Enthält Wettbewerbsdaten)\n- Recherche-Agent (Kann externe Recherchen durchführen)\n- Schreib-Agent (Kann Berichte verfassen)\n- Formatierungs-Agent (Kann Berichtstext in HTML für E-Mails konvertieren)\n- Gmail (Kann E-Mails versenden)\n\nARBEITSWEISE:\n- Analysiere das Problem (E-Mail) und die verfügbaren Projektdaten (Sheets)\n- Entwickle eigenständig eine Strategie zur Erstellung des Berichts\n- Entscheide selbst, welche Tools und Agenten du einsetzt und in welcher Reihenfolge\n- Bewerte Zwischenergebnisse kritisch und passe deine Strategie bei Bedarf an\n- Löse unerwartete Probleme kreativ\n- Schicke, den finalen Bericht in HTML (\"output_html_report\") vom Formatierungs-Agent als E-Mail. Schicke nur den E-Mail Text ohne Kommentare.",
+        "options": {
+          "systemMessage": "Du bist ein autonomer Koordinator-Agent, der eigenständig entscheidet, wie ein komplexes Problem am besten gelöst wird. Du analysierst Situationen, entwickelst Strategien und koordinierst spezialisierte Agenten. Du kannst selbstständig auf Probleme reagieren und alternative Lösungswege finden."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        552,
+        0
+      ],
+      "id": "10db7152-5033-4333-80a0-fa8e19fe453f",
+      "name": "Koordinator-Agent"
+    },
+    {
+      "parameters": {
+        "description": "Rufe dieses Tool auf, um zu recherchieren.",
+        "workflowId": {
+          "__rl": true,
+          "value": "E1vg2gVKYCidSN9f",
+          "mode": "list",
+          "cachedResultName": "Recherche-Agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [
+            "Aufgabe"
+          ],
+          "schema": [
+            {
+              "id": "Aufgabe",
+              "displayName": "Aufgabe",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        820,
+        220
+      ],
+      "id": "85a25978-03bc-4b7a-9d8b-0ab6920e721a",
+      "name": "Recherche-Agent"
+    },
+    {
+      "parameters": {
+        "description": "Rufe dieses Tool auf, um den Projektbericht zu schreiben.",
+        "workflowId": {
+          "__rl": true,
+          "value": "I1w1xdswtLZSzmcx",
+          "mode": "list",
+          "cachedResultName": "Schreib-Agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Aufgabe",
+              "displayName": "Aufgabe",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "output_research",
+              "displayName": "output_research",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "QA_Feedback",
+              "displayName": "QA_Feedback",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            },
+            {
+              "id": "Ursprünglicher_Bericht",
+              "displayName": "Ursprünglicher_Bericht",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        960,
+        220
+      ],
+      "id": "bc77c9e7-5561-42bc-957b-cee173e9ff74",
+      "name": "Schreib-Agent"
+    },
+    {
+      "parameters": {
+        "description": "Rufe dieses Tool, um Text in HTML zu konvertieren.",
+        "workflowId": {
+          "__rl": true,
+          "value": "V59HnwLlA72BFJsa",
+          "mode": "list",
+          "cachedResultName": "Formatierungs-Agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "output_writing": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('output_writing', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "output_writing"
+          ],
+          "schema": [
+            {
+              "id": "output_writing",
+              "displayName": "output_writing",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        1100,
+        220
+      ],
+      "id": "95d4da6e-0c2f-43be-8782-44c73e38708c",
+      "name": "Formatierungs-Agent"
+    },
+    {
+      "parameters": {
+        "model": "anthropic/claude-3.7-sonnet:thinking",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        180,
+        220
+      ],
+      "id": "97398c48-eb4e-4668-acfe-24f625c30fc5",
+      "name": "Claude 3.7 Sonnet Thinking",
+      "credentials": {
+        "openRouterApi": {
+          "id": "uFojtr8JtZlyk5gW",
+          "name": "OpenRouter account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Koordinator-Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Projektdetails_EQX_Alpha": {
+      "ai_tool": [
+        [
+          {
+            "node": "Koordinator-Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Konkurrenzanalyse_Automotive_EV": {
+      "ai_tool": [
+        [
+          {
+            "node": "Koordinator-Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Message": {
+      "main": [
+        [
+          {
+            "node": "Koordinator-Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Koordinator-Agent": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recherche-Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Koordinator-Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schreib-Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Koordinator-Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatierungs-Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Koordinator-Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude 3.7 Sonnet Thinking": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Koordinator-Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f2d3ad6c-fcf0-4d79-bad2-e5aa95051efe",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3a5559e8ad334c16d84ff797b1a53514ebc8a5446b58a1363bd0f879a6fb3f28"
+  },
+  "id": "LLyfLAdMD1Kh6NKX",
+  "tags": []
+}
